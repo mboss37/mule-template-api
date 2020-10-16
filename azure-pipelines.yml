@@ -24,7 +24,7 @@ steps:
   displayName: Download secure file
   name: settings
   inputs:
-    secureFile: 'settings.evo.xml'
+    secureFile: 'settings.xml'
 
 - task: Maven@3
   inputs:
