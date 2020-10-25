@@ -21,8 +21,6 @@ variables:
   - group: dev.vars.group
 - ${{ if eq(variables['build.SourceBranchName'], 'master') }}:
   - group: dev.vars.group
-# muleDeployer variables
-- group: muleDeployer
 # Cache local Repo variables
 - name: MAVEN_CACHE_FOLDER
   value: $(Pipeline.Workspace)/.m2/repository
