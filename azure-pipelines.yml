@@ -85,10 +85,15 @@ steps:
   displayName: Copy jar file to artifact directory...
   inputs:
     contents: 'target/*.jar'
+    CleanTargetFolder: true
     targetFolder: $(Build.ArtifactStagingDirectory)
+    flattenFolders: true
    
 - task: PublishBuildArtifacts@1
   displayName: Deploy to azure artifact...
   inputs:
     pathToPublish: $(Build.ArtifactStagingDirectory)
     artifactName: $(pomartifactId)
+    publishLocation: 'Container'
+   
+    
