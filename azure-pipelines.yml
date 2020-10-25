@@ -72,5 +72,5 @@ steps:
   displayName: Deploy Artifact
   inputs:
     goals: 'deploy:deploy-file'
-    options: '-s $(settingsXml.secureFilePath) $(MAVEN_OPTS) -Dpackaging=jar -DgroupId=$(pomgroupId) -DartifactId=$(pomartifactId) -Dversion=$(pomversion) -Dfile=$(jarFileName) -Durl=$(mule.azure.feedurl)'
+    options: '-s $(settings.secureFilePath) $(MAVEN_OPTS) -Dpackaging=jar -DgroupId=$(pomgroupId) -DartifactId=$(pomartifactId) -Dversion=$(pomversion) -Dfile=$(jarFileName) -Durl=$(mule.azure.feedurl)'
     jdkVersionOption: '1.8'
