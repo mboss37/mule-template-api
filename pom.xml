@@ -85,6 +85,27 @@
 				<version>${mule.maven.plugin.version}</version>
 				<extensions>true</extensions>
 				<configuration>
+					<classifier>mule-application</classifier>
+					<cloudHubDeployment>
+						<uri>${mule.uri}</uri>
+						<muleVersion>${app.runtime}</muleVersion>
+						<username>${MuleDeployerUsername}</username>
+						<password>${MuleDeployerPassword}</password>
+						<environment>${mule.deploy.env}</environment>
+						<applicationName>${project.artifactId}-${mule.env}</applicationName>
+						<workers>${mule.workers}</workers>
+						<workerType>${mule.workerSize}</workerType>
+						<region>${mule.region}</region>
+						<objectStoreV2>true</objectStoreV2>
+						<properties>
+							<mule.env>${mule.env}</mule.env>
+							<mule.vault.key>${mule.key}</mule.vault.key>
+							<anypoint.platform.client_id>${platform.clientId}</anypoint.platform.client_id>
+							<anypoint.platform.client_secret>${platform.clientSecret}</anypoint.platform.client_secret>
+							<anypoint.platform.base_uri>${mule.uri}</anypoint.platform.base_uri>
+							<anypoint.platform.analytics_base_uri>${anypoint.analyticsBaseUri}</anypoint.platform.analytics_base_uri>
+						</properties>
+					</cloudHubDeployment>
 				</configuration>
 			</plugin>
 		</plugins>
