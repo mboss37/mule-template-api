@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:error-handler-plugin="http://www.mulesoft.org/schema/mule/error-handler-plugin"
+	xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway"
+	xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties"
+	xmlns:json-logger="http://www.mulesoft.org/schema/mule/json-logger" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/mule/json-logger/current/mule-json-logger.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd
+http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd
+http://www.mulesoft.org/schema/mule/error-handler-plugin http://www.mulesoft.org/schema/mule/error-handler-plugin/current/mule-error-handler-plugin.xsd"> 
+	
+	
+	<json-logger:config 
+		name="vJSON_Logger_Config" 
+		doc:name="JSON Logger Config" 
+		doc:id="ec9ba8ff-1056-4a8a-a67d-00bae88f14b7" 
+		environment="${mule.env}" applicationName="${app.name}" applicationVersion="${app.version}"/>
+	
+	<configuration-properties
+		file="props/${mule.env}-properties.yaml" 
+		doc:name="Env Config Props" />
+
+	<configuration-properties
+		file="props/properties.yaml" 
+		doc:name="Common Config Props" />
+	
+	<error-handler-plugin:config 
+		name="Error_Handler_Plugin_Config" 
+		doc:name="Error Handler Plugin Config" 
+		doc:id="cab60193-cd60-4974-bff1-27813d1e54fa" 
+		apiName="#[Mule::p('app.name')]" 
+		apiVersion="#[Mule::p('app.version')]" />
+	
+	<configuration 
+		doc:name="Configuration" 
+		doc:id="4376672e-66e9-40fb-b0c4-e4d2a45ec938" 
+		defaultErrorHandler-ref="common-api-errorHandler" />
+	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="6bba993a-887a-4fd1-ae51-933fefe55b93" file="props/${mule.env}-secure.properties.yaml" key="${mule.key}" />
+	
+	<!-- <api-gateway:autodiscovery 
+		apiId="${api.id}" 
+		ignoreBasePath="true" 
+		doc:name="API Autodiscovery" 
+		doc:id="93b6d564-b2ef-4636-ac3a-dbe3abe5b503" 
+		flowRef="hello-world-api-main" 
+	/>	 -->
+
+</mule>

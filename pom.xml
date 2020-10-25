@@ -61,6 +61,36 @@
             <version>1.3.13</version>
             <classifier>mule-plugin</classifier>
         </dependency>
+    	<dependency>
+            <groupId>647c1b0f-49d6-4b1c-b154-a7e39428ef43</groupId>
+            <artifactId>json-logger</artifactId>
+            <version>2.0.1</version>
+            <classifier>mule-plugin</classifier>
+        </dependency>
+    	<dependency>
+            <groupId>com.mulesoft.connectors</groupId>
+            <artifactId>mule-amqp-connector</artifactId>
+            <version>1.6.0</version>
+            <classifier>mule-plugin</classifier>
+        </dependency>
+    	<dependency>
+            <groupId>org.mule.connectors</groupId>
+            <artifactId>mule-jms-connector</artifactId>
+            <version>1.6.3</version>
+            <classifier>mule-plugin</classifier>
+        </dependency>
+    	<dependency>
+            <groupId>647c1b0f-49d6-4b1c-b154-a7e39428ef43</groupId>
+            <artifactId>common-error-handler</artifactId>
+            <version>5.0.0</version>
+            <classifier>mule-plugin</classifier>
+        </dependency>
+    	<dependency>
+            <groupId>com.mulesoft.modules</groupId>
+            <artifactId>mule-secure-configuration-property-module</artifactId>
+            <version>1.2.3</version>
+            <classifier>mule-plugin</classifier>
+        </dependency>
     </dependencies>
 
 	<repositories>
