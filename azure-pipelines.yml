@@ -71,18 +71,7 @@ steps:
 - task: Maven@3
   displayName: Deploy Artifact
   inputs:
-    goals: 'deploy:deploy-file'
+    goals: 'deploy'
     options: '-s $(settings.secureFilePath) $(MAVEN_OPTS) -Dpackaging=jar -DgroupId=$(pomgroupId) -DartifactId=$(pomartifactId) -Dversion=$(pomversion) -Dfile=$(jarFileName) -DrepositoryId=$(mule.azure.feedId) -Durl=$(mule.azure.feedurl)'
     jdkVersionOption: '1.8'
     
-- task: CopyFiles@2
-  displayName: Copy jar file to artifact directory...
-  inputs:
-    contents: 'target/*.jar'
-    targetFolder: $(Build.ArtifactStagingDirectory)
-    
-- task: PublishBuildArtifacts@1
-  displayName: Deploy to azure artifact...
-  inputs:
-    pathToPublish: $(Build.ArtifactStagingDirectory)
-    artifactName: $(pomartifactId)
