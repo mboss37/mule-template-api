@@ -43,12 +43,34 @@ steps:
     secureFile: 'settings_mboss.xml'
 
 - task: Maven@3
+  displayName: Build and run munit
   inputs:
     mavenPomFile: 'pom.xml'
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    mavenOptions: '-Xmx3072m'
-    javaHomeOption: 'JDKVersion'
     jdkVersionOption: '1.8'
-    jdkArchitectureOption: 'x64'
     goals: 'package -s $(settings.secureFilePath) $(MAVEN_OPTS)'
+    
+- bash: |
+    ls target/*.jar
+    echo "##vso[task.setvariable variable=jarFilename]`ls target/*.jar`"
+    mvn -q -Dexec.executable=echo -Dexec.args='${project.groupId} ${project.artifactId} ${project.version}' --non-recursive exec:exec 2>/dev/null > /tmp/pominfos.txt
+    echo "##vso[task.setvariable variable=pomgroupId]`cat /tmp/pominfos.txt | cut -d " " -f 1`"
+    echo "##vso[task.setvariable variable=pomartifactId]`cat /tmp/pominfos.txt | cut -d " " -f 2`-$(mule.env)"
+    echo "##vso[task.setvariable variable=assetId]`cat /tmp/pominfos.txt | cut -d " " -f 2`" 
+    echo "##vso[task.setvariable variable=pomversion]`cat /tmp/pominfos.txt | cut -d " " -f 3`"
+  displayName : 'Extract properties of the pom artifact'
+ 
+- script: |
+    echo jarFilename: $(jarFilename)
+    echo pomgroupId: $(pomgroupId)
+    echo pomartifactId: $(pomartifactId)
+    echo pomversion: $(pomversion)
+  displayName: Show variables  
+    
+- task: Maven@3
+  displayName: Deploy Artifact
+  inputs:
+    goals: 'deploy:deploy-file'
+    options: '-s $(settingsXml.secureFilePath) $(MAVEN_OPTS) -Dpackaging=jar -DgroupId=$(pomgroupId) -DartifactId=$(pomartifactId) -Dversion=$(pomversion) -Dfile=$(jarFileName) -Durl=$(mule.azure.feedurl)'
+    jdkVersionOption: '1.8'
