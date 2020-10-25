@@ -5,13 +5,13 @@
     </http:listener-config>
     <apikit:config name="mule-template-api-config" api="resource::647c1b0f-49d6-4b1c-b154-a7e39428ef43:mule-template-api:1.0.0:raml:zip:mule-template-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
     <flow name="mule-template-api-main">
-        <http:listener config-ref="mule-template-api-httpListenerConfig" path="/api/*">
+        <http:listener config-ref="mule-template-api-httpListenerConfig" path="${http.path}">
             <http:response statusCode="#[vars.httpStatus default 200]">
-                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
             </http:response>
             <http:error-response statusCode="#[vars.httpStatus default 500]">
-                <http:body>#[payload]</http:body>
-                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+                <http:body><![CDATA[#[payload]]]></http:body>
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
             </http:error-response>
         </http:listener>
         <apikit:router config-ref="mule-template-api-config" />
