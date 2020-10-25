@@ -77,7 +77,8 @@ steps:
   displayName: Deploy Artifact
   inputs:
     goals: 'deploy'
-    options: '-s $(settings.secureFilePath) $(MAVEN_OPTS) -Dpackaging=jar -DgroupId=$(pomgroupId) -DartifactId=$(pomartifactId) -Dversion=$(pomversion) -Dfile=$(jarFileName) -DrepositoryId=$(mule.azure.feedId) -Durl=$(mule.azure.feedurl)'
+    options: '-s $(settings.secureFilePath) -Dpackaging=jar -DgroupId=$(pomgroupId) -DartifactId=$(pomartifactId) -Dversion=$(pomversion) -Dfile=$(jarFileName) -DrepositoryId=$(mule.azure.feedId) -Durl=$(mule.azure.feedurl)'
+    mavenOptions: '-Xmx3072m $(MAVEN_OPTS)'
     jdkVersionOption: '1.8'
     
 - task: CopyFiles@2
