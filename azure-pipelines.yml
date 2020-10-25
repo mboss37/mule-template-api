@@ -32,8 +32,12 @@ variables:
 steps:
 - task: CacheBeta@0
   inputs:
-    key: $(Build.SourcesDirectory)/pom.xml
+    key: 'maven | "$(Agent.OS)" | $(Build.SourcesDirectory)/pom.xml'
     path: $(MAVEN_CACHE_FOLDER)
+    cacheHitVar: 'CacheRestored'
+    restoreKeys: |
+      maven | "$(Agent.OS)"
+      maven
   displayName: Cache Maven local repo
   
 - task: DownloadSecureFile@1
@@ -49,7 +53,8 @@ steps:
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     jdkVersionOption: '1.8'
-    goals: 'package -s $(settings.secureFilePath) $(MAVEN_OPTS)'
+    goals: 'package -s $(settings.secureFilePath)'
+    mavenOptions: '-Xmx3072m $(MAVEN_OPTS)'
     
 - bash: |
     ls target/*.jar
@@ -72,6 +77,6 @@ steps:
   displayName: Deploy Artifact
   inputs:
     goals: 'deploy'
-    options: '-s $(settings.secureFilePath) $(MAVEN_OPTS) -Dpackaging=jar -DgroupId=$(pomgroupId) -DartifactId=$(pomartifactId) -Dversion=$(pomversion) -Dfile=$(jarFileName) -DrepositoryId=$(mule.azure.feedId) -Durl=$(mule.azure.feedurl)'
+    mavenOptions: '-s $(settings.secureFilePath) $(MAVEN_OPTS) -Dpackaging=jar -DgroupId=$(pomgroupId) -DartifactId=$(pomartifactId) -Dversion=$(pomversion) -Dfile=$(jarFileName) -DrepositoryId=$(mule.azure.feedId) -Durl=$(mule.azure.feedurl)'
     jdkVersionOption: '1.8'
     
