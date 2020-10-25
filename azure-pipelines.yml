@@ -91,7 +91,7 @@ steps:
   displayName: Deploy to azure artifact...
   inputs:
     pathToPublish: $(Build.ArtifactStagingDirectory)
-    artifactName: 'drop'
+    artifactName: $(pomartifactId)
     publishLocation: 'Container'
    
     
