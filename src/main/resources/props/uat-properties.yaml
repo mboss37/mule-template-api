@@ -1,0 +1,8 @@
+api:
+  id: "12345"
+  version: "v1"
+  
+http:
+  host: "0.0.0.0"
+  port: "8081"
+  path: "/api/${api.version}/*"

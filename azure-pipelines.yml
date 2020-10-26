@@ -20,7 +20,7 @@ variables:
 - ${{ if eq(variables['build.SourceBranchName'], 'release/*') }}:
   - group: uat.vars.group
 - ${{ if eq(variables['build.SourceBranchName'], 'master') }}:
-  - group: dev.vars.group
+  - group: prod.vars.group
 # Cache local Repo variables
 - name: MAVEN_CACHE_FOLDER
   value: $(Pipeline.Workspace)/.m2/repository
