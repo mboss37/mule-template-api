@@ -5,7 +5,7 @@
 
 trigger:
 - develop
-- release
+- release/*
 - master
 
 pool:
