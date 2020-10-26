@@ -40,6 +40,5 @@ output application/json
 }]]></ee:set-payload>
             </ee:message>
         </ee:transform>
-		<json-logger:logger doc:name="Logger" doc:id="83473815-ff92-4324-9c62-ea9596fc1175" config-ref="vJSON_Logger_Config" message="response"/>
     </flow>
 </mule>
