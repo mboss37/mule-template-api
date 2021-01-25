@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>647c1b0f-49d6-4b1c-b154-a7e39428ef43</groupId>
 	<artifactId>mule-template-api</artifactId>
-	<version>1.4.2-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<packaging>mule-application</packaging>
 
 	<name>mule-template-api</name>
@@ -15,6 +17,7 @@
 
 		<app.runtime>4.3.0</app.runtime>
 		<mule.maven.plugin.version>3.3.5</mule.maven.plugin.version>
+		<app.majorVersion>v1</app.majorVersion>
 	</properties>
 
 
@@ -25,40 +28,9 @@
 		<tag>HEAD</tag>
 	</scm>
 
-	<!-- Deployment to Azure Artifact -->
-	<distributionManagement>
-		<repository>
-			<id>mboss37</id>
-			<url>https://pkgs.dev.azure.com/mboss37/_packaging/mboss37/maven/v1</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-	</distributionManagement>
-
-	<!-- Deployment to Exchange -->
-	<profiles>
-		<profile>
-			<id>exchange-repository</id>
-			<activation>
-				<property>
-					<name>deployToExchange</name>
-					<value>true</value>
-				</property>
-			</activation>
-			<distributionManagement>
-				<repository>
-					<id>anypoint-exchange-v2</id>
-					<name>Corporate Repository</name>
-					<url>https://maven.eu1.anypoint.mulesoft.com/api/v1/organizations/${project.groupId}/maven</url>
-					<layout>default</layout>
-				</repository>
-			</distributionManagement>
-		</profile>
-	</profiles>
+	<!-- Deployment to Artifactory <distributionManagement> <repository> <id>xxx</id> 
+		<url>xxx</url> <releases> <enabled>true</enabled> </releases> <snapshots> 
+		<enabled>true</enabled> </snapshots> </repository> </distributionManagement> -->
 
 	<build>
 		<resources>
@@ -85,24 +57,22 @@
 				<configuration>
 					<classifier>mule-application</classifier>
 					<cloudHubDeployment>
-						<uri>${mule.uri}</uri>
+						<uri>https://anypoint.mulesoft.com</uri>
 						<muleVersion>${app.runtime}</muleVersion>
-						<username>${MuleDeployerUsername}</username>
-						<password>${MuleDeployerPassword}</password>
-						<environment>${mule.deploy.env}</environment>
-						<applicationName>${project.artifactId}-${mule.env}</applicationName>
-						<workers>${mule.workers}</workers>
-						<workerType>${mule.workerSize}</workerType>
-						<region>${mule.region}</region>
-						<objectStoreV2>true</objectStoreV2>
+						<businessGroup>${businessGroup}</businessGroup>
+						<applicationName>${project.artifactId}-{app.majorVersion}-{mule.env}</applicationName>
+						<environment>${anypointEnvironment}</environment>
+						<region>${region}</region>
+						<workers>${workers}</workers>
+						<workerType>${workerType}</workerType>
 						<properties>
 							<mule.env>${mule.env}</mule.env>
-							<mule.vault.key>${mule.key}</mule.vault.key>
-							<anypoint.platform.client_id>${platform.clientId}</anypoint.platform.client_id>
-							<anypoint.platform.client_secret>${platform.clientSecret}</anypoint.platform.client_secret>
-							<anypoint.platform.base_uri>${mule.uri}</anypoint.platform.base_uri>
-							<anypoint.platform.analytics_base_uri>${anypoint.analyticsBaseUri}</anypoint.platform.analytics_base_uri>
+							<mule.key>${mule.key}</mule.key>
 						</properties>
+						<connectedAppClientId>${connectedApp.clientId}</connectedAppClientId>
+						<connectedAppClientSecret>${connectedApp.clientSecret}</connectedAppClientSecret>
+						<connectedAppGrantType>client_credentials</connectedAppGrantType>
+						<objectStoreV2>true</objectStoreV2>
 					</cloudHubDeployment>
 				</configuration>
 			</plugin>
@@ -174,22 +144,17 @@
 	</dependencies>
 
 	<repositories>
-		<repository>
-			<id>mboss37</id>
-			<url>https://pkgs.dev.azure.com/mboss37/_packaging/mboss37/maven/v1</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
+		<!-- Artifactory Repository <repository> <id>xxx</id> <url>xxx</url> <releases> 
+			<enabled>true</enabled> </releases> <snapshots> <enabled>true</enabled> </snapshots> 
+			</repository> -->
+
 		<repository>
 			<id>anypoint-exchange-v2</id>
 			<name>Anypoint Exchange</name>
 			<url>https://maven.anypoint.mulesoft.com/api/v2/maven</url>
 			<layout>default</layout>
 		</repository>
+
 		<repository>
 			<id>mulesoft-releases</id>
 			<name>MuleSoft Releases Repository</name>
@@ -197,6 +162,7 @@
 			<layout>default</layout>
 		</repository>
 	</repositories>
+
 	<pluginRepositories>
 		<pluginRepository>
 			<id>mulesoft-releases</id>
