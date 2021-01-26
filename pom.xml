@@ -53,7 +53,6 @@
 				<configuration>
 					<classifier>mule-application</classifier>
 					<cloudHubDeployment>
-						<uri>https://anypoint.mulesoft.com</uri>
 						<muleVersion>${app.runtime}</muleVersion>
 						<businessGroup>${businessGroup}</businessGroup>
 						<applicationName>${project.artifactId}-${app.majorVersion}-${mule.env}</applicationName>
