@@ -34,6 +34,7 @@ pipeline {
                     -Dworkers=${WORKDERS} \\
                     -DworkerType=${WORKERTYPE} \\
                     -DbusinessGroup=${BG}'''
+               }
             }
         }
     }
