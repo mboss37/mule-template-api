@@ -13,23 +13,18 @@ pipeline {
     }
 
     stages {
-    
-
+ 
         stage('Run Munit') {
-
             steps {
-
                 sh 'mvn test'
-
             }
         }
            
 
         stage('Deploy to Cloudhub') {
-
             steps {
-
-                sh '''mvn deploy  -DmuleDeploy \\
+        		configFileProvider([configFile(fileId: "${global-settings.xml}", variable: 'MAVEN_SETTINGS_XML')]) {
+                sh '''-X -s $MAVEN_SETTINGS_XML deploy -DmuleDeploy \\
                     -Dmule.env=dev \\
                     -Dmule.key=${MULE_SECRET_KEY} \\
                     -DconnectedApp.clientId=${DEPLOY_CREDS_USR} \\
@@ -39,16 +34,12 @@ pipeline {
                     -Dworkers=${WORKDERS} \\
                     -DworkerType=${WORKERTYPE} \\
                     -DbusinessGroup=${BG}'''
-
             }
-
         }
     }
 
   tools {
-      
     maven 'Maven'
-
   }
 
 }
