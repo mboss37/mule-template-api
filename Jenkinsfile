@@ -23,8 +23,7 @@ pipeline {
 
         stage('Deploy to Cloudhub') {
             steps {
-        		configFileProvider([configFile(fileId: "${global-settings.xml}", variable: 'MAVEN_SETTINGS_XML')]) {
-                sh '''-X -s $MAVEN_SETTINGS_XML deploy -DmuleDeploy \\
+                sh ''mvn deploy  -DmuleDeploy \\
                     -Dmule.env=dev \\
                     -Dmule.key=${MULE_SECRET_KEY} \\
                     -DconnectedApp.clientId=${DEPLOY_CREDS_USR} \\
@@ -34,7 +33,7 @@ pipeline {
                     -Dworkers=${WORKDERS} \\
                     -DworkerType=${WORKERTYPE} \\
                     -DbusinessGroup=${BG}'''
-               }
+               
             }
         }
     }
