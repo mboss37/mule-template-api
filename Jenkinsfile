@@ -23,7 +23,7 @@ pipeline {
 
         stage('Deploy to Cloudhub') {
             steps {
-                sh '''mvn deploy  -DmuleDeploy \\
+                sh '''mvn deploy -DmuleDeploy \\
                     -Dmule.env=dev \\
                     -Dmule.key=${MULE_SECRET_KEY} \\
                     -DconnectedApp.clientId=${DEPLOY_CREDS_USR} \\
