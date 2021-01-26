@@ -9,6 +9,7 @@ pipeline {
         WORKERTYPE= "Micro"
         BG = "mboss"
         DEPLOY_CREDS = credentials('connectedAppCredentials')
+        MULE_SECRET_KEY = credentials('mule.key')
 
     }
 
@@ -29,7 +30,7 @@ pipeline {
 
                 sh '''mvn deploy  -DmuleDeploy \\
                     -Dmule.env=dev \\
-                    -Dmule.key=mulesoftmulesoftmulesoft \\
+                    -Dmule.key=${MULE_SECRET_KEY} \\
                     -DconnectedApp.clientId=${DEPLOY_CREDS_USR} \\
                     -DconnectedApp.clientSecret=${DEPLOY_CREDS_PSW} \\
                     -DanypointEnvironment=DEV \\
