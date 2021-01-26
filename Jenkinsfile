@@ -4,10 +4,11 @@ pipeline {
 
     environment {
 
-        REGION = "eu-central-1" 
+        REGION = "=eu-central-1" 
         WORKDERS = "1"
         WORKERTYPE= "Micro"
         BG = "mboss"
+        DEPLOY_CREDS = credentials('connectedAppCredentials')
 
     }
 
@@ -15,29 +16,29 @@ pipeline {
 
         stage('Run Munit') {
 
-        steps {
+            steps {
 
-            sh 'mvn test'
+                sh 'mvn test'
 
-        }
+            }
         }
 
         stage('Deploy to Cloudhub') {
 
-        steps {
+            steps {
 
-            sh '''mvn deploy  -DmuleDeploy \\
-                -Dmule.env=dev \\
-                -Dmule.key=mulesoftmulesoftmulesoft \\
-                -DconnectedApp.clientId=c7b4699bb5924fc3b77c5fae1b75968a \\
-                -DconnectedApp.clientSecret=e4df4135452D4F5bB3fd688aCA86aF24 \\
-                -DanypointEnvironment=DEV \\
-                -Dregion=${REGION} \\
-                -Dworkers=${WORKDERS} \\
-                -DworkerType=${WORKERTYPE} \\
-                -DbusinessGroup=${BG}'''
+                sh '''mvn deploy  -DmuleDeploy \\
+                    -Dmule.env=dev \\
+                    -Dmule.key=mulesoftmulesoftmulesoft \\
+                    -DconnectedApp.clientId=${DEPLOY_CREDS_USR} \\
+                    -DconnectedApp.clientSecret=${DEPLOY_CREDS_PSW} \\
+                    -DanypointEnvironment=DEV \\
+                    -Dregion=${REGION} \\
+                    -Dworkers=${WORKDERS} \\
+                    -DworkerType=${WORKERTYPE} \\
+                    -DbusinessGroup=${BG}'''
 
-        }
+            }
 
         }
     }
