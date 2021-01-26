@@ -4,7 +4,7 @@ pipeline {
 
     environment {
 
-        REGION = "=eu-central-1" 
+        REGION = "eu-central-1" 
         WORKDERS = "1"
         WORKERTYPE= "Micro"
         BG = "mboss"
