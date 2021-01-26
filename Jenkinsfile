@@ -28,7 +28,7 @@ pipeline {
             -Dmule.env=dev \\
             -Dmule.key=mulesoftmulesoftmulesoft \\
             -DconnectedApp.clientId="%DEPLOY_CREDS_USR%" \\
-            -DconnectedApp.clientSecret="%DEPLOY_CREDS_PSW%" \\
+            -DconnectedApp.clientSecret=%DEPLOY_CREDS_PSW%" \\
             -DanypointEnvironment=DEV \\
             -Dregion=%REGION% \\
             -Dworkers=1 \\
