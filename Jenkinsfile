@@ -75,7 +75,7 @@ pipeline {
     ANYPOINT_ENV_TYPE = getEnvType(GIT_BRANCH)
     ANYPOINT_DEPLOYMENT_ENV = getDeployEnv(GIT_BRANCH)
     ANYPOINT_REGION = "eu-central-1" 
-    ANYPOINT_WORKDERS = "1"
+    ANYPOINT_WORKERS = "1"
     ANYPOINT_WORKER_TYPE = "Micro"
     ANYPOINT_BG = "mboss"
     ANYPOINT_APP_CLIENT_ID = "anypoint_connectedApp.${ANYPOINT_ENV_TYPE}.client_id"
@@ -128,7 +128,7 @@ pipeline {
               -DconnectedApp.clientId=$ANYPOINT_APP_CLIENT_ID \
               -DconnectedApp.clientSecret=$ANYPOINT_APP_CLIENT_SECRET \
               -DanypointEnvironment=$ANYPOINT_DEPLOYMENT_ENV \
-              -Dworkers=$ANYPOINT_WORKDERS \
+              -Dworkers=$ANYPOINT_WORKERS \
               -DworkerType=$ANYPOINT_WORKER_TYPE \
               -DbusinessGroup=$ANYPOINT_BG
           '''
