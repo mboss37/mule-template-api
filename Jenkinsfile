@@ -1,6 +1,7 @@
 pipeline {
 
     agent any
+   
 
     environment {
         REGION = "eu-central-1" 
@@ -16,23 +17,26 @@ pipeline {
  
         stage('Run Munit') {
             steps {
-                sh 'mvn test'
+            	configFileProvider([configFile(fileId: 'maven-settings', variable: 'MAVEN_SETTINGS')]) {
+        			sh 'mvn -s $MAVEN_SETTINGS clean test'
+    			}
             }
         }
 
         stage('Deploy to Cloudhub') {
             steps {
-                sh '''mvn deploy -DmuleDeploy \\
-                    -Dmule.env=dev \\
-                    -Dmule.key=${MULE_SECRET_KEY} \\
-                    -DconnectedApp.clientId=${DEPLOY_CREDS_USR} \\
-                    -DconnectedApp.clientSecret=${DEPLOY_CREDS_PSW} \\
-                    -DanypointEnvironment=DEV \\
-                    -Dregion=${REGION} \\
-                    -Dworkers=${WORKDERS} \\
-                    -DworkerType=${WORKERTYPE} \\
-                    -DbusinessGroup=${BG}'''
-               
+               configFileProvider([configFile(fileId: 'maven-settings', variable: 'MAVEN_SETTINGS')]) {
+				    sh 'mvn -s $MAVEN_SETTINGS deploy -DmuleDeploy \\
+				    -Dmule.env=dev \\
+				    -Dmule.key=${MULE_SECRET_KEY} \\
+				    -DconnectedApp.clientId=${DEPLOY_CREDS_USR} \\
+				    -DconnectedApp.clientSecret=${DEPLOY_CREDS_PSW} \\
+				    -DanypointEnvironment=DEV \\
+				    -Dregion=${REGION} \\
+				    -Dworkers=${WORKDERS} \\
+				    -DworkerType=${WORKERTYPE} \\
+				    -DbusinessGroup=${BG}'
+				}
             }
         }
     }
