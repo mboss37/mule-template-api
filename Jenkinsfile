@@ -122,7 +122,7 @@ pipeline {
       steps {
         configFileProvider([configFile(fileId: 'mvn-settings', variable: 'MAVEN_SETTINGS')]) {
           sh '''
-            mvn  -e -X -s $MAVEN_SETTINGS deploy -DmuleDeploy  \
+            mvn -s $MAVEN_SETTINGS deploy -DmuleDeploy  \
               -Dmule.env=$MULE_ENV \
               -Dmule.key=$MULE_ENCRYPTION_KEY \
               -DconnectedApp.clientId=$ANYPOINT_APP_CLIENT_ID \
