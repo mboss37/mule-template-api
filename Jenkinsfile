@@ -105,7 +105,8 @@ pipeline {
         configFileProvider([configFile(fileId: 'mvn-settings', variable: 'MAVEN_SETTINGS')]) {
           sh '''
             mvn -s $MAVEN_SETTINGS clean test \
-              -Dmule.env=$MULE_ENCRYPTION_KEY
+              -Dmule.env=$MULE_ENV \
+              -Dmule.key=$MULE_ENCRYPTION_KEY
           '''
         }
       }
