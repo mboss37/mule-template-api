@@ -40,7 +40,7 @@ def getMappedEnv (git_branch) {
   switch(bname) {
     case ~/develop/ : name = "dev"; break;
     case ~/release/: name = "qa"; break;
-    case ~/prod/: name = "prod"; break;
+    case ~/master/: name = "prod"; break;
     default: throw new Exception ("branch ${git_branch} not recognized.");
   }
   return name
