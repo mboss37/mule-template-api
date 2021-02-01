@@ -1,12 +1,3 @@
-//parses the git url to extract repo name 
-def parseRepoName (git_url) {
-  if(!git_url){
-    throw new Error("git url ${git_url} is not valid.")
-  }
-  def (_,head,name) = (git_url =~ /^(git@|https:\/\/).*\/(.+)(\.git)+$/)[0]
-  return name
-}
-
 //removes the origin/ from the branch name
 def parseBranchName (git_branch) {
   if(!git_branch){
@@ -16,8 +7,21 @@ def parseBranchName (git_branch) {
   return name
 }
 
+//returns the application name based on environment
+def getApplicationName (git_branch) {
+    if(!git_branch){
+    throw new Error("branch ${git_branch} is not valid.")
+  }
+  String bname = parseBranchName(git_branch) 
+  switch(bname) {
+    case ~/(develop)|(release)/: return "${project.artifactId}-${app.majorVersion}-${mule.env}";
+    case ~/master/: return "${project.artifactId}-${app.majorVersion}";
+    default: throw new Exception ("branch ${git_branch} not recognized.");
+  }
+}
+
 //returns the deployment env name according to branch name
-def getDeployEnv(git_branch) {
+def getDeployEnv (git_branch) {
   if(!git_branch){
     throw new Error("branch ${git_branch} is not valid.")
   }
@@ -40,7 +44,7 @@ def getMappedEnv (git_branch) {
   switch(bname) {
     case ~/develop/ : name = "dev"; break;
     case ~/release/: name = "qa"; break;
-    case ~/master/: name = "prod"; break;
+    case ~/prod/: name = "prod"; break;
     default: throw new Exception ("branch ${git_branch} not recognized.");
   }
   return name
@@ -53,11 +57,12 @@ def getEnvType (git_branch) {
   }
   String bname = parseBranchName(git_branch) 
   switch(bname) {
-    case ~/(develop)|(release)/: return 'nonProd';
+    case ~/(develop)|(release)/: return "nonProd";
     case ~/master/: return "Prod"
     default: throw new Exception ("branch ${git_branch} not recognized.");
   }
 }
+
 
 pipeline {
 
@@ -69,13 +74,13 @@ pipeline {
   }
 
   environment {
-    PROJECT_NAME = parseRepoName(GIT_URL)
+    APP_NAME = parseBranchName(GIT_BRANCH)
     MULE_ENV = getMappedEnv(GIT_BRANCH)
     MULE_ENCRYPTION_KEY = "${ANYPOINT_ENV_TYPE}.mule.encryption.key"
     ANYPOINT_ENV_TYPE = getEnvType(GIT_BRANCH)
     ANYPOINT_DEPLOYMENT_ENV = getDeployEnv(GIT_BRANCH)
     ANYPOINT_REGION = "eu-central-1" 
-    ANYPOINT_WORKERS = "1"
+    ANYPOINT_WORKDERS = "1"
     ANYPOINT_WORKER_TYPE = "Micro"
     ANYPOINT_BG = "mboss"
     ANYPOINT_APP_CLIENT_ID = "anypoint_connectedApp.${ANYPOINT_ENV_TYPE}.client_id"
@@ -87,7 +92,7 @@ pipeline {
     stage ('Initialization') {
     steps {
       echo "GIT_BRANCH = $GIT_BRANCH"
-      echo "PROJECT_NAME = $PROJECT_NAME"
+      echo "APP_NAME = $APP_NAME"
       echo "ANYPOINT_ENV_TYPE = $ANYPOINT_ENV_TYPE"
       echo "ANYPOINT_DEPLOYMENT_ENV = $ANYPOINT_DEPLOYMENT_ENV"
       echo "MULE_ENV = $MULE_ENV"
@@ -123,12 +128,13 @@ pipeline {
         configFileProvider([configFile(fileId: 'mvn-settings', variable: 'MAVEN_SETTINGS')]) {
           sh '''
             mvn -s $MAVEN_SETTINGS deploy -DmuleDeploy  \
+              -DapplicationName=$applicationName \
               -Dmule.env=$MULE_ENV \
               -Dmule.key=$MULE_ENCRYPTION_KEY \
               -DconnectedApp.clientId=$ANYPOINT_APP_CLIENT_ID \
               -DconnectedApp.clientSecret=$ANYPOINT_APP_CLIENT_SECRET \
               -DanypointEnvironment=$ANYPOINT_DEPLOYMENT_ENV \
-              -Dworkers=$ANYPOINT_WORKERS \
+              -Dworkers=$ANYPOINT_WORKDERS \
               -DworkerType=$ANYPOINT_WORKER_TYPE \
               -DbusinessGroup=$ANYPOINT_BG
           '''
@@ -137,4 +143,3 @@ pipeline {
     }
   }
 }
-
