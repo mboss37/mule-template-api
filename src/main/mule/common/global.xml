@@ -17,9 +17,9 @@ http://www.mulesoft.org/schema/mule/error-handler-plugin http://www.mulesoft.org
 		doc:name="Env Config Props" />
 
 	<configuration-properties
-		file="props/properties.yaml" 
+		file="props/global-properties.yaml" 
 		doc:name="Common Config Props" />
-	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="6bba993a-887a-4fd1-ae51-933fefe55b93" file="props/${mule.env}-secure-properties.yaml" key="${mule.key}" />
+	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="6bba993a-887a-4fd1-ae51-933fefe55b93" file="props/${mule.env}-properties.yaml" key="${mule.key}" />
 	
 	<!-- <api-gateway:autodiscovery 
 		apiId="${api.id}" 
