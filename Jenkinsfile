@@ -29,36 +29,37 @@ pipeline {
     MULE_SECRET_KEY = credentials('mule.key')
     }
 
-  stage ('Initialization') {
+  stages {
+
+    stage ('Initialization') {
     steps {
       echo "PROJECT_NAME = $PROJECT_NAME"
       }
     }
-  
-  stage('Run Munit') {
-    steps {
-      configFileProvider([configFile(fileId: 'mvn-settings', variable: 'MAVEN_SETTINGS')]) {
-      sh 'mvn -s $MAVEN_SETTINGS clean test'
+    
+    stage('Run Munit') {
+      steps {
+        configFileProvider([configFile(fileId: 'mvn-settings', variable: 'MAVEN_SETTINGS')]) {
+        sh 'mvn -s $MAVEN_SETTINGS clean test'
+        }
       }
     }
-  }
 
-  stage('Deploy to Cloudhub') {
-    steps {
-      configFileProvider([configFile(fileId: 'mvn-settings', variable: 'MAVEN_SETTINGS')]) {
-        sh '''mvn -s $MAVEN_SETTINGS deploy -DmuleDeploy \\
-        -Dmule.env=dev \\
-        -Dmule.key=${MULE_SECRET_KEY} \\
-        -DconnectedApp.clientId=${DEPLOY_CREDS_USR} \\
-        -DconnectedApp.clientSecret=${DEPLOY_CREDS_PSW} \\
-        -DanypointEnvironment=DEV \\
-        -Dregion=${REGION} \\
-        -Dworkers=${WORKDERS} \\
-        -DworkerType=${WORKERTYPE} \\
-        -DbusinessGroup=${BG}'''
+    stage('Deploy to Cloudhub') {
+      steps {
+        configFileProvider([configFile(fileId: 'mvn-settings', variable: 'MAVEN_SETTINGS')]) {
+          sh '''mvn -s $MAVEN_SETTINGS deploy -DmuleDeploy \\
+          -Dmule.env=dev \\
+          -Dmule.key=${MULE_SECRET_KEY} \\
+          -DconnectedApp.clientId=${DEPLOY_CREDS_USR} \\
+          -DconnectedApp.clientSecret=${DEPLOY_CREDS_PSW} \\
+          -DanypointEnvironment=DEV \\
+          -Dregion=${REGION} \\
+          -Dworkers=${WORKDERS} \\
+          -DworkerType=${WORKERTYPE} \\
+          -DbusinessGroup=${BG}'''
+        }
       }
     }
+
   }
-
-}
-
