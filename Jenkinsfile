@@ -1,7 +1,6 @@
 
 
 // Parses the git url to extract repo name 
-
 def parseRepoName (git_url) {
   if(!git_url){
     throw new Error("git url ${git_url} is not valid.")
@@ -61,5 +60,5 @@ pipeline {
         }
       }
     }
-
   }
+}
