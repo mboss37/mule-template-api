@@ -32,9 +32,8 @@ pipeline {
 
     stage ('Initialization') {
     steps {
-      echo "BRANCH_NAME = $env.Branch_Name"
+      echo "BRANCH_NAME = ${env.GIT_BRANCH}"
       echo "PROJECT_NAME = $PROJECT_NAME"
-      echo "ANYPOINT_ENV = $ANYPOINT_ENV"
       }
     }
     
