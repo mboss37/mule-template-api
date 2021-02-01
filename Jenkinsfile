@@ -94,22 +94,22 @@ pipeline {
       echo "MULE_ENCRYPTION_KEY = $MULE_ENCRYPTION_KEY"
       echo "ANYPOINT_APP_CLIENT_ID = $ANYPOINT_APP_CLIENT_ID"
       echo "ANYPOINT_APP_CLIENT_SECRET = $ANYPOINT_APP_CLIENT_SECRET"
-      echo "MULE_ENCRYPTION_KEY = credentials("${nonProd.mule.encryption.key}")"
       }
     }
     
-    // stage('Run Munit') {
-    //   environment{
-    //     MULE_ENCRYPTION_KEY = credentials("${nonProd.mule.encryption.key}")
-    //   }
-    //   steps {
-    //     configFileProvider([configFile(fileId: 'mvn-settings', variable: 'MAVEN_SETTINGS')]) {
-    //       sh '''
-    //         mvn -s $MAVEN_SETTINGS_XML clean test
-    //       '''
-    //     }
-    //   }
-    // }
+    stage('Run Munit') {
+      environment{
+        MULE_ENCRYPTION_KEY = credentials('${MULE_ENCRYPTION_KEY}')
+      }
+      steps {
+        configFileProvider([configFile(fileId: 'mvn-settings', variable: 'MAVEN_SETTINGS')]) {
+          sh '''
+            mvn -s $MAVEN_SETTINGS_XML clean test \\   
+              -Dmule.env=$MULE_ENCRYPTION_KEY
+          '''
+        }
+      }
+    }
 
     // stage('Deploy to Cloudhub') {
     //   environment{
