@@ -9,7 +9,6 @@ def parseRepoName (git_url) {
   return name
 }
 
-//returns the deployment env name according to branch name
 def getDeployEnv(git_branch) {
   if(!git_branch){
     throw new Error("branch ${git_branch} is not valid.")
@@ -29,7 +28,7 @@ pipeline {
 
   tools { 
       maven 'Maven 3.6.3' 
-      jdk 'jdk8' 
+      jdk 'jdk11' 
   }
 
   environment {
@@ -47,6 +46,7 @@ pipeline {
 
     stage ('Initialization') {
     steps {
+      echo "GIT_BRANCH = $GIT_BRANCH"
       echo "PROJECT_NAME = $PROJECT_NAME"
       echo "ANYPOINT_ENV = $ANYPOINT_ENV"
       }
