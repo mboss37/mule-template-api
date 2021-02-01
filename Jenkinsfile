@@ -99,7 +99,7 @@ pipeline {
     
     stage('Run Munit') {
       environment{
-        MULE_ENCRYPTION_KEY = credentials('${MULE_ENCRYPTION_KEY}')
+        MULE_ENCRYPTION_KEY = credentials('$MULE_ENCRYPTION_KEY')
       }
       steps {
         configFileProvider([configFile(fileId: 'mvn-settings', variable: 'MAVEN_SETTINGS')]) {
