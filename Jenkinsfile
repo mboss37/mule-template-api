@@ -71,14 +71,15 @@ pipeline {
   environment {
     PROJECT_NAME = parseRepoName(GIT_URL)
     MULE_ENV = getMappedEnv(GIT_BRANCH)
+    MULE_ENCRYPTION_KEY = "${ANYPOINT_ENV_TYPE}.mule.encryption.key"
     ANYPOINT_ENV_TYPE = getEnvType(GIT_BRANCH)
-    ANYPOINT_ENV = getDeployEnv(GIT_BRANCH)
+    ANYPOINT_DEPLOYMENT_ENV = getDeployEnv(GIT_BRANCH)
     ANYPOINT_REGION = "eu-central-1" 
     ANYPOINT_WORKDERS = "1"
     ANYPOINT_WORKER_TYPE = "Micro"
     ANYPOINT_BG = "mboss"
-    ANYPOINT_APP_CLIENT_ID = "anypoint_connectedApp.${ENV_TYPE}.client_id"
-    ANYPOINT_APP_CLIENT_SECRET = "anypoint_connectedApp.${ENV_TYPE}.client_secret"
+    ANYPOINT_APP_CLIENT_ID = "anypoint_connectedApp.${ANYPOINT_ENV_TYPE}.client_id"
+    ANYPOINT_APP_CLIENT_SECRET = "anypoint_connectedApp.${ANYPOINT_ENV_TYPE}.client_secret"
     }
 
   stages {
@@ -88,7 +89,7 @@ pipeline {
       echo "GIT_BRANCH = $GIT_BRANCH"
       echo "PROJECT_NAME = $PROJECT_NAME"
       echo "ANYPOINT_ENV_TYPE = $ANYPOINT_ENV_TYPE"
-      echo "ANYPOINT_ENV = $ANYPOINT_ENV"
+      echo "ANYPOINT_DEPLOYMENT_ENV = $ANYPOINT_DEPLOYMENT_ENV"
       echo "MULE_ENV = $MULE_ENV"
       }
     }
@@ -101,22 +102,22 @@ pipeline {
       }
     }
 
-    // stage('Deploy to Cloudhub') {
-    //   steps {
-    //     configFileProvider([configFile(fileId: 'mvn-settings', variable: 'MAVEN_SETTINGS')]) {
-    //       sh '''mvn -s $MAVEN_SETTINGS deploy -DmuleDeploy \\
-    //       -Dmule.env=dev \\
-    //       -Dmule.key=${MULE_SECRET_KEY} \\
-    //       -DconnectedApp.clientId=${DEPLOY_CREDS_USR} \\
-    //       -DconnectedApp.clientSecret=${DEPLOY_CREDS_PSW} \\
-    //       -DanypointEnvironment=DEV \\
-    //       -Dregion=${REGION} \\
-    //       -Dworkers=${WORKDERS} \\
-    //       -DworkerType=${WORKERTYPE} \\
-    //       -DbusinessGroup=${BG}'''
-    //     }
-    //   }
-    // }
+    stage('Deploy to Cloudhub') {
+      steps {
+        configFileProvider([configFile(fileId: 'mvn-settings', variable: 'MAVEN_SETTINGS')]) {
+          sh '''mvn -s $MAVEN_SETTINGS deploy -DmuleDeploy \\
+          -Dmule.env=$MULE_ENV \\
+          -Dmule.key=$MULE_ENCRYPTION_KEY \\
+          -DconnectedApp.clientId=$ANYPOINT_APP_CLIENT_ID \\
+          -DconnectedApp.clientSecret=$ANYPOINT_APP_CLIENT_SECRET \\
+          -DanypointEnvironment=$ANYPOINT_DEPLOYMENT_ENV \\
+          -Dregion=$ANYPOINT_REGION \\
+          -Dworkers=$ANYPOINT_WORKDERS \\
+          -DworkerType=$ANYPOINT_WORKER_TYPE \\
+          -DbusinessGroup=$ANYPOINT_BG'''
+        }
+      }
+    }
   }
 }
 
