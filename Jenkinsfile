@@ -113,7 +113,7 @@ pipeline {
 
     // stage('Deploy to Cloudhub') {
     //   environment{
-    //     MULE_ENCRYPTION_KEY = credentials("${ANYPOINT_VAULT_CRED_KEY}")
+    //     MULE_ENCRYPTION_KEY = credentials('${ANYPOINT_VAULT_CRED_KEY}')
     //   }
 
     //   steps {
