@@ -17,7 +17,7 @@ pipeline {
  
         stage('Run Munit') {
             steps {
-            	configFileProvider([configFile(fileId: '8765f5c8-0c4d-43ef-af32-5a80f8e224da', variable: 'MAVEN_SETTINGS')]) {
+            	configFileProvider([configFile(fileId: 'mvn-settings', variable: 'MAVEN_SETTINGS')]) {
         			sh 'mvn -s $MAVEN_SETTINGS clean test'
     			}
             }
@@ -25,7 +25,7 @@ pipeline {
 
         stage('Deploy to Cloudhub') {
             steps {
-               configFileProvider([configFile(fileId: '8765f5c8-0c4d-43ef-af32-5a80f8e224da', variable: 'MAVEN_SETTINGS')]) {
+               configFileProvider([configFile(fileId: 'mvn-settings', variable: 'MAVEN_SETTINGS')]) {
 				    sh '''mvn -s $MAVEN_SETTINGS deploy -DmuleDeploy \\
 				    -Dmule.env=dev \\
 				    -Dmule.key=${MULE_SECRET_KEY} \\
