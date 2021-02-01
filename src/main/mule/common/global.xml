@@ -10,14 +10,7 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/mule/json-logger/current/mule-json-logger.xsd
 http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd
 http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd
-http://www.mulesoft.org/schema/mule/error-handler-plugin http://www.mulesoft.org/schema/mule/error-handler-plugin/current/mule-error-handler-plugin.xsd"> 
-	
-	
-	<json-logger:config 
-		name="vJSON_Logger_Config" 
-		doc:name="JSON Logger Config" 
-		doc:id="ec9ba8ff-1056-4a8a-a67d-00bae88f14b7" 
-		environment="${mule.env}" applicationName="${app.name}" applicationVersion="${app.version}"/>
+http://www.mulesoft.org/schema/mule/error-handler-plugin http://www.mulesoft.org/schema/mule/error-handler-plugin/current/mule-error-handler-plugin.xsd">
 	
 	<configuration-properties
 		file="props/${mule.env}-properties.yaml" 
@@ -26,18 +19,6 @@ http://www.mulesoft.org/schema/mule/error-handler-plugin http://www.mulesoft.org
 	<configuration-properties
 		file="props/properties.yaml" 
 		doc:name="Common Config Props" />
-	
-	<error-handler-plugin:config 
-		name="Error_Handler_Plugin_Config" 
-		doc:name="Error Handler Plugin Config" 
-		doc:id="cab60193-cd60-4974-bff1-27813d1e54fa" 
-		apiName="#[Mule::p('app.name')]" 
-		apiVersion="#[Mule::p('app.version')]" />
-	
-	<configuration 
-		doc:name="Configuration" 
-		doc:id="4376672e-66e9-40fb-b0c4-e4d2a45ec938" 
-		defaultErrorHandler-ref="common-api-errorHandler" />
 	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="6bba993a-887a-4fd1-ae51-933fefe55b93" file="props/${mule.env}-secure-properties.yaml" key="${mule.key}" />
 	
 	<!-- <api-gateway:autodiscovery 

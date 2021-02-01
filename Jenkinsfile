@@ -19,7 +19,6 @@ pipeline {
                 sh 'mvn test'
             }
         }
-           
 
         stage('Deploy to Cloudhub') {
             steps {
@@ -43,3 +42,4 @@ pipeline {
   }
 
 }
+
