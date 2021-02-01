@@ -91,6 +91,9 @@ pipeline {
       echo "ANYPOINT_ENV_TYPE = $ANYPOINT_ENV_TYPE"
       echo "ANYPOINT_DEPLOYMENT_ENV = $ANYPOINT_DEPLOYMENT_ENV"
       echo "MULE_ENV = $MULE_ENV"
+      echo "MULE_ENCRYPTION_KEY = $MULE_ENCRYPTION_KEY"
+      echo "ANYPOINT_APP_CLIENT_ID = $ANYPOINT_APP_CLIENT_ID"
+      echo "ANYPOINT_APP_CLIENT_SECRET = $ANYPOINT_APP_CLIENT_SECRET"
       }
     }
     
@@ -102,22 +105,22 @@ pipeline {
       }
     }
 
-    stage('Deploy to Cloudhub') {
-      steps {
-        configFileProvider([configFile(fileId: 'mvn-settings', variable: 'MAVEN_SETTINGS')]) {
-          sh '''mvn -s $MAVEN_SETTINGS deploy -DmuleDeploy \\
-          -Dmule.env=$MULE_ENV \\
-          -Dmule.key=$MULE_ENCRYPTION_KEY \\
-          -DconnectedApp.clientId=$ANYPOINT_APP_CLIENT_ID \\
-          -DconnectedApp.clientSecret=$ANYPOINT_APP_CLIENT_SECRET \\
-          -DanypointEnvironment=$ANYPOINT_DEPLOYMENT_ENV \\
-          -Dregion=$ANYPOINT_REGION \\
-          -Dworkers=$ANYPOINT_WORKDERS \\
-          -DworkerType=$ANYPOINT_WORKER_TYPE \\
-          -DbusinessGroup=$ANYPOINT_BG'''
-        }
-      }
-    }
+    // stage('Deploy to Cloudhub') {
+    //   steps {
+    //     configFileProvider([configFile(fileId: 'mvn-settings', variable: 'MAVEN_SETTINGS')]) {
+    //       sh '''mvn -s $MAVEN_SETTINGS deploy -DmuleDeploy \\
+    //       -Dmule.env=$MULE_ENV \\
+    //       -Dmule.key=$MULE_ENCRYPTION_KEY \\
+    //       -DconnectedApp.clientId=$ANYPOINT_APP_CLIENT_ID \\
+    //       -DconnectedApp.clientSecret=$ANYPOINT_APP_CLIENT_SECRET \\
+    //       -DanypointEnvironment=$ANYPOINT_DEPLOYMENT_ENV \\
+    //       -Dregion=$ANYPOINT_REGION \\
+    //       -Dworkers=$ANYPOINT_WORKDERS \\
+    //       -DworkerType=$ANYPOINT_WORKER_TYPE \\
+    //       -DbusinessGroup=$ANYPOINT_BG'''
+    //     }
+    //   }
+    // }
   }
 }
 
