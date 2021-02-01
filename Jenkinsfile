@@ -99,12 +99,12 @@ pipeline {
     
     stage('Run Munit') {
       environment{
-        MULE_ENCRYPTION_KEY = credentials('$MULE_ENCRYPTION_KEY')
+        MULE_ENCRYPTION_KEY = credentials("${MULE_ENCRYPTION_KEY}")
       }
       steps {
         configFileProvider([configFile(fileId: 'mvn-settings', variable: 'MAVEN_SETTINGS')]) {
           sh '''
-            mvn -s $MAVEN_SETTINGS_XML clean test \\   
+            mvn -s $MAVEN_SETTINGS clean test \
               -Dmule.env=$MULE_ENCRYPTION_KEY
           '''
         }
@@ -113,7 +113,7 @@ pipeline {
 
     // stage('Deploy to Cloudhub') {
     //   environment{
-    //     MULE_ENCRYPTION_KEY = credentials('${ANYPOINT_VAULT_CRED_KEY}')
+    //     MULE_ENCRYPTION_KEY = credentials("${MULE_ENCRYPTION_KEY}")
     //   }
 
     //   steps {
