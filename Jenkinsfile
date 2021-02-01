@@ -7,15 +7,15 @@ def parseBranchName (git_branch) {
   return name
 }
 
-//returns the application name based on environment
-def getApplicationName (git_branch) {
-    if(!git_branch){
+//returns the application name based on env
+def applicationName (git_branch) {
+  if(!git_branch){
     throw new Error("branch ${git_branch} is not valid.")
   }
-  String bname = parseBranchName(git_branch) 
-  switch(bname) {
-    case ~/(develop)|(release)/: return "${project.artifactId}-${app.majorVersion}-${mule.env}";
-    case ~/(master)/: return "${project.artifactId}-${app.majorVersion}";
+  String env = getDeployEnv (git_branch) 
+  switch(env) {
+    case ~/(DEV)|(QA)/: return "${project.artifactId}-${app.majorVersion}-${mule.env}";
+    case ~/PROD/:  return "${project.artifactId}-${app.majorVersion}";
     default: throw new Exception ("branch ${git_branch} not recognized.");
   }
 }
@@ -74,7 +74,8 @@ pipeline {
   }
 
   environment {
-    APP_NAME = getApplicationName(GIT_BRANCH)
+    BRANCH_NAME = parseBranchName(GIT_BRANCH)
+    APP_NAME = applicationName(GIT_BRANCH)
     MULE_ENV = getMappedEnv(GIT_BRANCH)
     MULE_ENCRYPTION_KEY = "${ANYPOINT_ENV_TYPE}.mule.encryption.key"
     ANYPOINT_ENV_TYPE = getEnvType(GIT_BRANCH)
@@ -91,7 +92,7 @@ pipeline {
 
     stage ('Initialization') {
     steps {
-      echo "GIT_BRANCH = $GIT_BRANCH"
+      echo "BRANCH_NAME = $BRANCH_NAME"
       echo "APP_NAME = $APP_NAME"
       echo "ANYPOINT_ENV_TYPE = $ANYPOINT_ENV_TYPE"
       echo "ANYPOINT_DEPLOYMENT_ENV = $ANYPOINT_DEPLOYMENT_ENV"
@@ -128,7 +129,7 @@ pipeline {
         configFileProvider([configFile(fileId: 'mvn-settings', variable: 'MAVEN_SETTINGS')]) {
           sh '''
             mvn -s $MAVEN_SETTINGS deploy -DmuleDeploy  \
-              -DapplicationName=$applicationName \
+              -DapplicationName=$APP_NAME \
               -Dmule.env=$MULE_ENV \
               -Dmule.key=$MULE_ENCRYPTION_KEY \
               -DconnectedApp.clientId=$ANYPOINT_APP_CLIENT_ID \
