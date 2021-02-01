@@ -9,19 +9,6 @@ def parseRepoName (git_url) {
   return name
 }
 
-def getDeployEnv(git_branch) {
-  if(!git_branch){
-    throw new Error("branch ${git_branch} is not valid.")
-  }
-  String bname = parseBranchName(git_branch) 
-  switch(bname) {
-    case ~/dev/ : return "DEV";
-    case ~/qa/: return "QA";
-    case ~/uat/: return "UAT";
-    default: throw new Exception ("branch ${git_branch} not recognized.");
-  }
-}
-
 pipeline {
 
   agent any
@@ -33,7 +20,6 @@ pipeline {
 
   environment {
     PROJECT_NAME = parseRepoName(GIT_URL)
-    ANYPOINT_ENV = getDeployEnv(GIT_BRANCH)
     REGION = "eu-central-1" 
     WORKDERS = "1"
     WORKERTYPE= "Micro"
