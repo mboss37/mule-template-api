@@ -18,25 +18,7 @@
 		<app.majorVersion>v1</app.majorVersion>
 	</properties>
 
-
-	<scm>
-		<connection>scm:git:https://github.com/mboss37/mule-template-api.git</connection>
-		<url>https://github.com/mboss37/mule-template-api</url>
-		<developerConnection>scm:git:https://github.com/mboss37/mule-template-api.git</developerConnection>
-		<tag>HEAD</tag>
-	</scm>
-
 	<build>
-		<resources>
-			<resource>
-				<directory>${basedir}/src/main/app</directory>
-				<filtering>true</filtering>
-			</resource>
-			<resource>
-				<directory>${basedir}/src/main/resources</directory>
-				<filtering>true</filtering>
-			</resource>
-		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
