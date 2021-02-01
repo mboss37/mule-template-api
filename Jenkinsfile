@@ -15,7 +15,7 @@ def getApplicationName (git_branch) {
   String bname = parseBranchName(git_branch) 
   switch(bname) {
     case ~/(develop)|(release)/: return "${project.artifactId}-${app.majorVersion}-${mule.env}";
-    case ~/master/: return "${project.artifactId}-${app.majorVersion}";
+    case ~/(master)/: return "${project.artifactId}-${app.majorVersion}";
     default: throw new Exception ("branch ${git_branch} not recognized.");
   }
 }
@@ -74,7 +74,7 @@ pipeline {
   }
 
   environment {
-    APP_NAME = parseBranchName(GIT_BRANCH)
+    APP_NAME = getApplicationName(GIT_BRANCH)
     MULE_ENV = getMappedEnv(GIT_BRANCH)
     MULE_ENCRYPTION_KEY = "${ANYPOINT_ENV_TYPE}.mule.encryption.key"
     ANYPOINT_ENV_TYPE = getEnvType(GIT_BRANCH)
