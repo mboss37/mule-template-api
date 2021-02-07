@@ -96,7 +96,7 @@ pipeline {
               -Dmule.env=$MULE_ENV \
               -Dmule.key=$MULE_ENCRYPTION_KEY
           '''
-         junit 'build/reports/**/*.xml'
+         junit '**/target/surefire-reports/*.xml'
         }
       }
     }
