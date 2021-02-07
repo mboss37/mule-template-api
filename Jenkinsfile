@@ -52,9 +52,7 @@ def getEnvType (git_branch) {
 
 
 pipeline {
-
   agent any
-
   tools { 
       maven 'Maven 3.6.3' 
       jdk 'jdk11' 
@@ -75,7 +73,6 @@ pipeline {
     }
 
   stages {
-
     stage ('Initialization') {
     steps {
       echo "BRANCH_NAME = $BRANCH_NAME"
@@ -104,15 +101,18 @@ pipeline {
     }
     
     stage('Deploy Artifact') {
+      steps {
         configFileProvider([configFile(fileId: 'mvn-settings', variable: 'MAVEN_SETTINGS')]) {
           sh '''
             echo "Starting deployment to Artifactory..."
             mvn -s $MAVEN_SETTINGS deploy -DmuleDeploy 
           '''
+        }
       }
-    
+    }
+
     stage('Deploy to Cloudhub') {
-      environment{
+      environment {
         MULE_ENCRYPTION_KEY = credentials("${MULE_ENCRYPTION_KEY}")
         ANYPOINT_APP_CLIENT_ID = credentials("${ANYPOINT_APP_CLIENT_ID}")
         ANYPOINT_APP_CLIENT_SECRET = credentials("${ANYPOINT_APP_CLIENT_SECRET}")
