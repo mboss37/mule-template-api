@@ -122,7 +122,6 @@ pipeline {
 
             echo "Starting deployment..."
             mvn -s $MAVEN_SETTINGS deploy -DmuleDeploy  \
-              -DapplicationName=$APP_NAME
               -Dmule.env=$MULE_ENV \
               -Dmule.key=$MULE_ENCRYPTION_KEY \
               -DconnectedApp.clientId=$ANYPOINT_APP_CLIENT_ID \
