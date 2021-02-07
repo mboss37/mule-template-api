@@ -57,7 +57,6 @@ pipeline {
       maven 'Maven 3.6.3' 
       jdk 'jdk11' 
   }
-
   environment {
     BRANCH_NAME = parseBranchName(GIT_BRANCH)
     MULE_ENV = getMappedEnv(GIT_BRANCH)
@@ -118,7 +117,6 @@ pipeline {
         ANYPOINT_APP_CLIENT_ID = credentials("${ANYPOINT_APP_CLIENT_ID}")
         ANYPOINT_APP_CLIENT_SECRET = credentials("${ANYPOINT_APP_CLIENT_SECRET}")
       }
-
       steps {
         configFileProvider([configFile(fileId: 'mvn-settings', variable: 'MAVEN_SETTINGS')]) {
           sh '''
@@ -140,13 +138,7 @@ pipeline {
   }
   post {
     always {
-      xunit (
-        thresholds: [ skipped(failureThreshold: '0'), failed(failureThreshold: '0') ],
-          tools: [
-            JUnit(pattern: '**/surefire-reports/*.xml'),
-            JUnit(pattern: '**/generatedJUnitFiles/JUnit/*.xml'),
-            BoostTest(pattern: '**/*_results.xml')]
-      )
+	    junit '**/target/surefire-reports/*.xml'
     }
   }
 }
