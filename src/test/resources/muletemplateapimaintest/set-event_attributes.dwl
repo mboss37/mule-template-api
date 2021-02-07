@@ -1,0 +1,33 @@
+{
+  "headers": {
+    "host": "localhost:8081",
+    "connection": "keep-alive",
+    "upgrade-insecure-requests": "1",
+    "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.96 Safari/537.36",
+    "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+    "sec-gpc": "1",
+    "sec-fetch-site": "none",
+    "sec-fetch-mode": "navigate",
+    "sec-fetch-user": "?1",
+    "sec-fetch-dest": "document",
+    "accept-encoding": "gzip, deflate, br",
+    "accept-language": "en-GB,en-US;q=0.9,en;q=0.8",
+    "cookie": "screenResolution=1792x1120; JSESSIONID.fc05e0f4=node01fyzvgwcjl33x1mo56q5g9bx1c5.node0; jenkins-timestamper-offset=-3600000; JSESSIONID.0ddb1bef=node01sbrz0byjd9r81abv0bn23ik8z1.node0; JSESSIONID.02c16a04=node0gxt0llmmpz7s2bzjdstxbfnj42.node0; JSESSIONID.abc71414=node0cx1ljcym5xmmf4l5stazhy0f51.node0; JSESSIONID.80954831=node016v0eapel1pjh163kmhufhn1hv13.node0"
+  },
+  "clientCertificate": null,
+  "method": "GET",
+  "scheme": "http",
+  "queryParams": {},
+  "requestUri": "/api/v1/hello",
+  "queryString": "",
+  "version": "HTTP/1.1",
+  "maskedRequestPath": "/hello",
+  "listenerPath": "/api/v1/*",
+  "relativePath": "/api/v1/hello",
+  "localAddress": "/127.0.0.1:8081",
+  "uriParams": {},
+  "rawRequestUri": "/api/v1/hello",
+  "rawRequestPath": "/api/v1/hello",
+  "remoteAddress": "/127.0.0.1:56785",
+  "requestPath": "/api/v1/hello"
+}
