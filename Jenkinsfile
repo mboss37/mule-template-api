@@ -113,15 +113,16 @@ pipeline {
       steps {
         configFileProvider([configFile(fileId: 'mvn-settings', variable: 'MAVEN_SETTINGS')]) {
           sh '''
+          	echo "Choosing Deployment based on Env Type"
 			if [ $ANYPOINT_ENV_TYPE = "nonProd" ]; then
-			    SUFFIX=$MULE_ENV
-			    echo $SUFFIX
-			else 
-			    SUFFIX=""
-			    echo $SUFFIX
+			  SUFFIX=-$MULE_ENV
+            else 
+              SUFFIX=''
 			fi
-			
+
+            echo "Starting deployment..."
             mvn -s $MAVEN_SETTINGS deploy -DmuleDeploy  \
+              -DapplicationName=$APP_NAME
               -Dmule.env=$MULE_ENV \
               -Dmule.key=$MULE_ENCRYPTION_KEY \
               -DconnectedApp.clientId=$ANYPOINT_APP_CLIENT_ID \
