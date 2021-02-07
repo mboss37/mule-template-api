@@ -6,7 +6,7 @@
 
 	<groupId>647c1b0f-49d6-4b1c-b154-a7e39428ef43</groupId>
 	<artifactId>mule-template</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.1.0</version>
 	<packaging>mule-application</packaging>
 
 	<name>mule-template-api</name>
