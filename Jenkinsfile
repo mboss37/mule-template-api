@@ -1,12 +1,3 @@
-//parses the git url to extract repo name 
-def parseRepoName (git_url) {
-  if(!git_url){
-    throw new Error("git url ${git_url} is not valid.")
-  }
-  def (_,head,name) = (git_url =~ /^(git@|https:\/\/).*\/(.+)(\.git)+$/)[0]
-  return name
-}
-
 //removes the origin/ from the branch name
 def parseBranchName (git_branch) {
   if(!git_branch){
@@ -17,7 +8,7 @@ def parseBranchName (git_branch) {
 }
 
 //returns the deployment env name according to branch name
-def getDeployEnv(git_branch) {
+def getDeployEnv (git_branch) {
   if(!git_branch){
     throw new Error("branch ${git_branch} is not valid.")
   }
@@ -40,7 +31,7 @@ def getMappedEnv (git_branch) {
   switch(bname) {
     case ~/develop/ : name = "dev"; break;
     case ~/release/: name = "qa"; break;
-    case ~/prod/: name = "prod"; break;
+    case ~/master/: name = "prod"; break;
     default: throw new Exception ("branch ${git_branch} not recognized.");
   }
   return name
@@ -53,11 +44,12 @@ def getEnvType (git_branch) {
   }
   String bname = parseBranchName(git_branch) 
   switch(bname) {
-    case ~/(develop)|(release)/: return 'nonProd';
+    case ~/(develop)|(release)/: return "nonProd";
     case ~/master/: return "Prod"
     default: throw new Exception ("branch ${git_branch} not recognized.");
   }
 }
+
 
 pipeline {
 
@@ -69,7 +61,7 @@ pipeline {
   }
 
   environment {
-    PROJECT_NAME = parseRepoName(GIT_URL)
+    BRANCH_NAME = parseBranchName(GIT_BRANCH)
     MULE_ENV = getMappedEnv(GIT_BRANCH)
     MULE_ENCRYPTION_KEY = "${ANYPOINT_ENV_TYPE}.mule.encryption.key"
     ANYPOINT_ENV_TYPE = getEnvType(GIT_BRANCH)
@@ -86,8 +78,7 @@ pipeline {
 
     stage ('Initialization') {
     steps {
-      echo "GIT_BRANCH = $GIT_BRANCH"
-      echo "PROJECT_NAME = $PROJECT_NAME"
+      echo "BRANCH_NAME = $BRANCH_NAME"
       echo "ANYPOINT_ENV_TYPE = $ANYPOINT_ENV_TYPE"
       echo "ANYPOINT_DEPLOYMENT_ENV = $ANYPOINT_DEPLOYMENT_ENV"
       echo "MULE_ENV = $MULE_ENV"
@@ -122,6 +113,7 @@ pipeline {
       steps {
         configFileProvider([configFile(fileId: 'mvn-settings', variable: 'MAVEN_SETTINGS')]) {
           sh '''
+            echo "Starting deployment..."
             mvn -s $MAVEN_SETTINGS deploy -DmuleDeploy  \
               -Dmule.env=$MULE_ENV \
               -Dmule.key=$MULE_ENCRYPTION_KEY \
