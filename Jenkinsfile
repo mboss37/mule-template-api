@@ -96,6 +96,7 @@ pipeline {
               -Dmule.env=$MULE_ENV \
               -Dmule.key=$MULE_ENCRYPTION_KEY
           '''
+         junit 'build/reports/**/*.xml'
         }
       }
     }
@@ -136,11 +137,6 @@ pipeline {
           '''
         }
       }
-    }
-    post {
-        always {
-            junit 'build/reports/**/*.xml'
-        }
     }
   }
 }
