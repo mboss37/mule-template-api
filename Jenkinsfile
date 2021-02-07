@@ -113,11 +113,12 @@ pipeline {
       steps {
         configFileProvider([configFile(fileId: 'mvn-settings', variable: 'MAVEN_SETTINGS')]) {
           sh '''
-          	echo "Getting application name suffix.."  
 			if [ $ANYPOINT_ENV_TYPE = "nonProd" ]; then 
-			    APP_SUFFIX=$MULE_ENV
-			    echo "Suffix = $APP_SUFFIX"
+			    APP_NAME=${project.artifactId}-${app.majorVersion}-$MULE_ENV
+			else
+				APP_NAME=${project.artifactId}-${app.majorVersion}
 			fi
+			
             mvn -s $MAVEN_SETTINGS deploy -DmuleDeploy  \
               -Dmule.env=$MULE_ENV \
               -Dmule.key=$MULE_ENCRYPTION_KEY \
