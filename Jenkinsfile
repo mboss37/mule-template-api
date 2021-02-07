@@ -102,7 +102,15 @@ pipeline {
         }
       }
     }
-
+    
+    stage('Deploy Artifact') {
+        configFileProvider([configFile(fileId: 'mvn-settings', variable: 'MAVEN_SETTINGS')]) {
+          sh '''
+            echo "Starting deployment to Artifactory..."
+            mvn -s $MAVEN_SETTINGS deploy -DmuleDeploy 
+          '''
+      }
+    
     stage('Deploy to Cloudhub') {
       environment{
         MULE_ENCRYPTION_KEY = credentials("${MULE_ENCRYPTION_KEY}")
@@ -113,7 +121,7 @@ pipeline {
       steps {
         configFileProvider([configFile(fileId: 'mvn-settings', variable: 'MAVEN_SETTINGS')]) {
           sh '''
-            echo "Starting deployment..."
+            echo "Starting deployment to Cloudhub..."
             mvn -s $MAVEN_SETTINGS deploy -DmuleDeploy  \
               -Dmule.env=$MULE_ENV \
               -Dmule.key=$MULE_ENCRYPTION_KEY \
