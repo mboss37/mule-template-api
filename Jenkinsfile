@@ -113,10 +113,12 @@ pipeline {
       steps {
         configFileProvider([configFile(fileId: 'mvn-settings', variable: 'MAVEN_SETTINGS')]) {
           sh '''
-			if [ $ANYPOINT_ENV_TYPE = "nonProd" ]; then 
-			    APP_NAME=${project.artifactId}-${app.majorVersion}-$MULE_ENV
-			else
-				APP_NAME=${project.artifactId}-${app.majorVersion}
+			if [ $ANYPOINT_ENV_TYPE = "nonProd" ]; then
+			    SUFFIX=$MULE_ENV
+			    echo $SUFFIX
+			else 
+			    SUFFIX=""
+			    echo $SUFFIX
 			fi
 			
             mvn -s $MAVEN_SETTINGS deploy -DmuleDeploy  \
