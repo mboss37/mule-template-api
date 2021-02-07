@@ -105,7 +105,7 @@ pipeline {
         configFileProvider([configFile(fileId: 'mvn-settings', variable: 'MAVEN_SETTINGS')]) {
           sh '''
             echo "Starting deployment to Artifactory..."
-            mvn -s $MAVEN_SETTINGS deploy -DmuleDeploy 
+            mvn -s $MAVEN_SETTINGS deploy 
           '''
         }
       }
