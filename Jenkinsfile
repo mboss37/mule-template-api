@@ -113,13 +113,6 @@ pipeline {
       steps {
         configFileProvider([configFile(fileId: 'mvn-settings', variable: 'MAVEN_SETTINGS')]) {
           sh '''
-          	echo "Choosing Deployment based on Env Type"
-			if [ $ANYPOINT_ENV_TYPE = "nonProd" ]; then
-			  SUFFIX=-$MULE_ENV
-            else 
-              SUFFIX=''
-			fi
-
             echo "Starting deployment..."
             mvn -s $MAVEN_SETTINGS deploy -DmuleDeploy  \
               -Dmule.env=$MULE_ENV \
