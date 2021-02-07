@@ -96,7 +96,6 @@ pipeline {
               -Dmule.env=$MULE_ENV \
               -Dmule.key=$MULE_ENCRYPTION_KEY
           '''
-         junit '**/target/surefire-reports/*.xml'
         }
       }
     }
@@ -137,6 +136,17 @@ pipeline {
           '''
         }
       }
+    }
+    post {
+        always{
+            xunit (
+                thresholds: [ skipped(failureThreshold: '0'), failed(failureThreshold: '0') ],
+                tools: [
+                    JUnit(pattern: '**/surefire-reports/*.xml'),
+                    JUnit(pattern: '**/generatedJUnitFiles/JUnit/*.xml'),
+                    BoostTest(pattern: '**/*_results.xml')]
+            )
+        }
     }
   }
 }
