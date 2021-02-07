@@ -105,7 +105,8 @@ pipeline {
         configFileProvider([configFile(fileId: 'mvn-settings', variable: 'MAVEN_SETTINGS')]) {
           sh '''
             echo "Starting deployment to Artifactory..."
-            mvn -s $MAVEN_SETTINGS deploy 
+            mvn -s $MAVEN_SETTINGS deploy  \
+            -DskipMunitTests
           '''
         }
       }
@@ -123,6 +124,7 @@ pipeline {
           sh '''
             echo "Starting deployment to Cloudhub..."
             mvn -s $MAVEN_SETTINGS deploy -DmuleDeploy  \
+              -DskipMunitTests \
               -Dmule.env=$MULE_ENV \
               -Dmule.key=$MULE_ENCRYPTION_KEY \
               -DconnectedApp.clientId=$ANYPOINT_APP_CLIENT_ID \
