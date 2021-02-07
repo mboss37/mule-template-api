@@ -57,7 +57,6 @@ pipeline {
       maven 'Maven 3.6.3' 
       jdk 'jdk11' 
   }
-
   environment {
     BRANCH_NAME = parseBranchName(GIT_BRANCH)
     MULE_ENV = getMappedEnv(GIT_BRANCH)
@@ -105,7 +104,8 @@ pipeline {
         configFileProvider([configFile(fileId: 'mvn-settings', variable: 'MAVEN_SETTINGS')]) {
           sh '''
             echo "Starting deployment to Artifactory..."
-            mvn -s $MAVEN_SETTINGS deploy 
+            mvn -s $MAVEN_SETTINGS deploy  \
+            -DskipMunitTests
           '''
         }
       }
@@ -117,12 +117,12 @@ pipeline {
         ANYPOINT_APP_CLIENT_ID = credentials("${ANYPOINT_APP_CLIENT_ID}")
         ANYPOINT_APP_CLIENT_SECRET = credentials("${ANYPOINT_APP_CLIENT_SECRET}")
       }
-
       steps {
         configFileProvider([configFile(fileId: 'mvn-settings', variable: 'MAVEN_SETTINGS')]) {
           sh '''
             echo "Starting deployment to Cloudhub..."
             mvn -s $MAVEN_SETTINGS deploy -DmuleDeploy  \
+              -DskipMunitTests \
               -Dmule.env=$MULE_ENV \
               -Dmule.key=$MULE_ENCRYPTION_KEY \
               -DconnectedApp.clientId=$ANYPOINT_APP_CLIENT_ID \
@@ -134,6 +134,11 @@ pipeline {
           '''
         }
       }
+    }
+  }
+  post {
+    always {
+	    junit '**/target/surefire-reports/*.xml'
     }
   }
 }
