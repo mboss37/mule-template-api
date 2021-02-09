@@ -6,8 +6,8 @@ pipeline {
     ANYPOINT_WORKDERS = "1"
     ANYPOINT_WORKER_TYPE = "Micro"
     ANYPOINT_BG = "harvey-nichols-6"
-    ANYPOINT_APP_CLIENT_ID = "nonprod-connected-app-id"
-    ANYPOINT_APP_CLIENT_SECRET = "nonprod-connected-app-secret"
+    ANYPOINT_APP_CLIENT_ID = "anypoint_connectedApp.nonProd.client_id"
+    ANYPOINT_APP_CLIENT_SECRET = "anypoint_connectedApp.nonProd.client_secret"
   }
 
   stages {
