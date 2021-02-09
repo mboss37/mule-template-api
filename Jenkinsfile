@@ -35,7 +35,7 @@ pipeline {
         ANYPOINT_APP_CLIENT_SECRET = credentials("${ANYPOINT_APP_CLIENT_SECRET}")
       }
       steps {
-      sh '''mvn deploy -DmuleDeploy \
+      sh '''mvn -X deploy -DmuleDeploy \
             -DskipMunitTests \
             -DconnectedApp.clientId=$ANYPOINT_APP_CLIENT_ID \
             -DconnectedApp.clientSecret=$ANYPOINT_APP_CLIENT_SECRET \
