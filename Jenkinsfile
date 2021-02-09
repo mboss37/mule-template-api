@@ -1,5 +1,9 @@
 pipeline {
   agent any
+  tools { 
+      maven 'Maven 3.6.3' 
+      jdk 'jdk11' 
+  }
   environment {
     ANYPOINT_DEPLOYMENT_ENV = "Dev"
     ANYPOINT_REGION = "eu-central-1"
