@@ -1,13 +1,17 @@
 pipeline {
   agent any
+  tools { 
+      maven 'Maven 3.6.3' 
+      jdk 'jdk11' 
+  }
   environment {
     ANYPOINT_DEPLOYMENT_ENV = "Dev"
     ANYPOINT_REGION = "eu-central-1"
     ANYPOINT_WORKDERS = "1"
     ANYPOINT_WORKER_TYPE = "Micro"
     ANYPOINT_BG = "harvey-nichols-6"
-    ANYPOINT_APP_CLIENT_ID = "nonprod-connected-app-id"
-    ANYPOINT_APP_CLIENT_SECRET = "nonprod-connected-app-secret"
+    ANYPOINT_APP_CLIENT_ID = "anypoint_connectedApp.nonProd.client_id"
+    ANYPOINT_APP_CLIENT_SECRET = "anypoint_connectedApp.nonProd.client_secret"
   }
 
   stages {
@@ -35,7 +39,7 @@ pipeline {
         ANYPOINT_APP_CLIENT_SECRET = credentials("${ANYPOINT_APP_CLIENT_SECRET}")
       }
       steps {
-      sh '''mvn deploy -DmuleDeploy \
+      sh '''mvn -X deploy -DmuleDeploy \
             -DskipMunitTests \
             -DconnectedApp.clientId=$ANYPOINT_APP_CLIENT_ID \
             -DconnectedApp.clientSecret=$ANYPOINT_APP_CLIENT_SECRET \
