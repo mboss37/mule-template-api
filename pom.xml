@@ -5,8 +5,8 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>647c1b0f-49d6-4b1c-b154-a7e39428ef43</groupId>
-	<artifactId>mule-template</artifactId>
-	<version>1.3.2-RC-SNAPSHOT</version>
+	<artifactId>mule-template-api</artifactId>
+	<version>1.3.3-SNAPSHOT</version>
 	<packaging>mule-application</packaging>
 
 	<name>mule-template-api</name>
@@ -14,7 +14,6 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
 		<app.runtime>4.3.0</app.runtime>
 		<mule.maven.plugin.version>3.5.0</mule.maven.plugin.version>
 		<app.majorVersion>v1</app.majorVersion>
