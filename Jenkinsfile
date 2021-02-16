@@ -130,7 +130,7 @@ pipeline {
               -DanypointEnvironment=$ANYPOINT_DEPLOYMENT_ENV \
               -Dworkers=$ANYPOINT_WORKDERS \
               -DworkerType=$ANYPOINT_WORKER_TYPE \
-              -DbusinessGroup=$ANYPOINT_BG
+              -DbusinessGroup='$ANYPOINT_BG'
           '''
         }
       }
