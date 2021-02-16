@@ -66,7 +66,7 @@ pipeline {
     ANYPOINT_REGION = "eu-central-1" 
     ANYPOINT_WORKDERS = "1"
     ANYPOINT_WORKER_TYPE = "Micro"
-    ANYPOINT_BG = "mboss"
+    ANYPOINT_BG = "Harvey Nichols New"
     ANYPOINT_APP_CLIENT_ID = "anypoint_connectedApp.${ANYPOINT_ENV_TYPE}.client_id"
     ANYPOINT_APP_CLIENT_SECRET = "anypoint_connectedApp.${ANYPOINT_ENV_TYPE}.client_secret"
     }
