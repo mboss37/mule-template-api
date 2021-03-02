@@ -50,10 +50,7 @@ def getEnvType(git_branch) {
   }
   
 //return app name based on environment
-def appName() {
-  def (_,name) = sh 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout';
-  return name
-}
+def appName = sh 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout';
 
 pipeline {
   agent any
@@ -62,7 +59,6 @@ pipeline {
       jdk 'jdk11' 
   }
   environment {
-    APP_NAME = appName()
     BRANCH_NAME = parseBranchName(GIT_BRANCH)
     MULE_ENV = getMappedEnv(GIT_BRANCH)
     MULE_ENCRYPTION_KEY = "${ANYPOINT_ENV_TYPE}.mule.encryption.key"
@@ -80,7 +76,7 @@ pipeline {
     stage ('Initialization') {
     steps {
       echo "BRANCH_NAME = $BRANCH_NAME"
-      echo "APP_NAME" = "$APP_NAME"
+      echo "APP_NAME" = "$appName"
       echo "ANYPOINT_ENV_TYPE = $ANYPOINT_ENV_TYPE"
       echo "ANYPOINT_DEPLOYMENT_ENV = $ANYPOINT_DEPLOYMENT_ENV"
       echo "MULE_ENV = $MULE_ENV"
