@@ -74,8 +74,6 @@ pipeline {
   stages {
     stage ('Initialization') {
     steps {
-      GIT_BRANCH = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
-      echo "GIT_BRANCH" = $GIT_BRANCH
       echo "BRANCH_NAME = $BRANCH_NAME"
       echo "ANYPOINT_ENV_TYPE = $ANYPOINT_ENV_TYPE"
       echo "ANYPOINT_DEPLOYMENT_ENV = $ANYPOINT_DEPLOYMENT_ENV"
@@ -103,9 +101,10 @@ pipeline {
     
     stage('Deploy Artifact') {
       when {
-			  expression { 
-          BRANCH_NAME == 'master'}
-      }
+        expression {
+          GIT_BRANCH = 'origin/' + sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
+                    return GIT_BRANCH == 'origin/master'
+        }
       steps {
         configFileProvider([configFile(fileId: 'mvn-settings', variable: 'MAVEN_SETTINGS')]) {
           sh '''
