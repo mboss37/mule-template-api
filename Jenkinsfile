@@ -48,9 +48,6 @@ def getEnvType(git_branch) {
     case ~/master/: return "Prod"
     default: throw new Exception ("branch ${git_branch} not recognized.");
   }
-  
-//return app name based on environment
-def appName = sh 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout';
 
 pipeline {
   agent any
