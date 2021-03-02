@@ -75,7 +75,6 @@ pipeline {
     stage ('Initialization') {
     steps {
       echo "BRANCH_NAME = $BRANCH_NAME"
-      echo branch
       echo "ANYPOINT_ENV_TYPE = $ANYPOINT_ENV_TYPE"
       echo "ANYPOINT_DEPLOYMENT_ENV = $ANYPOINT_DEPLOYMENT_ENV"
       echo "MULE_ENV = $MULE_ENV"
@@ -102,7 +101,8 @@ pipeline {
     
     stage('Deploy Artifact') {
       when {
-			  branch 'master'
+			  expression { 
+          $BRANCH_NAME == 'master'}
       }
       steps {
         configFileProvider([configFile(fileId: 'mvn-settings', variable: 'MAVEN_SETTINGS')]) {
