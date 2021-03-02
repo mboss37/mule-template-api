@@ -66,7 +66,7 @@ pipeline {
     ANYPOINT_REGION = "eu-central-1" 
     ANYPOINT_WORKDERS = "1"
     ANYPOINT_WORKER_TYPE = "Micro"
-    ANYPOINT_BG = "Harvey Nichols New"
+    ANYPOINT_BG = "mboss"
     ANYPOINT_APP_CLIENT_ID = "anypoint_connectedApp.${ANYPOINT_ENV_TYPE}.client_id"
     ANYPOINT_APP_CLIENT_SECRET = "anypoint_connectedApp.${ANYPOINT_ENV_TYPE}.client_secret"
     }
@@ -100,10 +100,14 @@ pipeline {
     }
     
     stage('Deploy Artifact') {
+      when {
+                // Deploy artifact if release
+                expression { $BRANCH_NAME == 'master' }
+           }
       steps {
         configFileProvider([configFile(fileId: 'mvn-settings', variable: 'MAVEN_SETTINGS')]) {
           sh '''
-            echo "Starting deployment to Artifactory..."
+            echo "Starting deployment of release artifact to Artifactory..."
             mvn -s $MAVEN_SETTINGS deploy  \
             -DskipMunitTests
           '''
