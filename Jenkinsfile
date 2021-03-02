@@ -51,8 +51,8 @@ def getEnvType(git_branch) {
   
 //return app name based on environment
 def appName() {
-  sh 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout';
-  return
+  def (_,name) = sh 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout';
+  return name
 }
 
 pipeline {
