@@ -102,7 +102,7 @@ pipeline {
     stage('Deploy Artifact') {
       when {
                 // Deploy artifact if release
-                expression { $BRANCH_NAME == 'master' }
+                { environment name: '$BRANCH_NAME', value: 'master' }
            }
       steps {
         configFileProvider([configFile(fileId: 'mvn-settings', variable: 'MAVEN_SETTINGS')]) {
