@@ -1,5 +1,5 @@
 //removes the origin/ from the branch name
-def parseBranchName (git_branch) {
+def parseBranchName(git_branch) {
   if(!git_branch){
     throw new Error("branch ${git_branch} is not valid.")
   }
@@ -8,7 +8,7 @@ def parseBranchName (git_branch) {
 }
 
 //returns the deployment env name according to branch name
-def getDeployEnv (git_branch) {
+def getDeployEnv(git_branch) {
   if(!git_branch){
     throw new Error("branch ${git_branch} is not valid.")
   }
@@ -22,7 +22,7 @@ def getDeployEnv (git_branch) {
 }
 
 //returns environment name mapped to the git branch
-def getMappedEnv (git_branch) {
+def getMappedEnv(git_branch) {
   if(!git_branch){
     throw new Error("branch ${git_branch} is not valid.")
   }
@@ -38,7 +38,7 @@ def getMappedEnv (git_branch) {
 }
 
 //returns the type of the environment according to the branch name e.g sandbox or production
-def getEnvType (git_branch) {
+def getEnvType(git_branch) {
   if(!git_branch){
     throw new Error("branch ${git_branch} is not valid.")
   }
@@ -48,8 +48,12 @@ def getEnvType (git_branch) {
     case ~/master/: return "Prod"
     default: throw new Exception ("branch ${git_branch} not recognized.");
   }
+  
+//return app name based on environment
+def appName() {
+  sh 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout';
+  return
 }
-
 
 pipeline {
   agent any
@@ -58,6 +62,7 @@ pipeline {
       jdk 'jdk11' 
   }
   environment {
+    APP_NAME = appName()
     BRANCH_NAME = parseBranchName(GIT_BRANCH)
     MULE_ENV = getMappedEnv(GIT_BRANCH)
     MULE_ENCRYPTION_KEY = "${ANYPOINT_ENV_TYPE}.mule.encryption.key"
@@ -75,6 +80,7 @@ pipeline {
     stage ('Initialization') {
     steps {
       echo "BRANCH_NAME = $BRANCH_NAME"
+      echo "APP_NAME" = $APP_NAME"
       echo "ANYPOINT_ENV_TYPE = $ANYPOINT_ENV_TYPE"
       echo "ANYPOINT_DEPLOYMENT_ENV = $ANYPOINT_DEPLOYMENT_ENV"
       echo "MULE_ENV = $MULE_ENV"
@@ -129,6 +135,7 @@ pipeline {
             echo "Starting deployment to Cloudhub..."
             mvn -s $MAVEN_SETTINGS deploy -DmuleDeploy  \
               -DskipMunitTests \
+              -Dapp.name=$APP_NAME \
               -Dmule.env=$MULE_ENV \
               -Dmule.key=$MULE_ENCRYPTION_KEY \
               -DconnectedApp.clientId=$ANYPOINT_APP_CLIENT_ID \

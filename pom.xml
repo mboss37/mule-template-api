@@ -47,7 +47,7 @@
 					<cloudHubDeployment>
 						<muleVersion>${app.runtime}</muleVersion>
 						<businessGroup>${businessGroup}</businessGroup>
-						<applicationName>${project.artifactId}-${app.majorVersion}</applicationName>
+						<applicationName>${app.name}</applicationName>
 						<environment>${anypointEnvironment}</environment>
 						<region>${region}</region>
 						<workers>${workers}</workers>
