@@ -102,6 +102,7 @@ pipeline {
     stage('Deploy Artifact') {
       when {
         expression {
+          echo "Skipping if not release artifact"
           BRANCH_NAME == 'master'
         }
       }
