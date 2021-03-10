@@ -48,6 +48,7 @@ def getEnvType(git_branch) {
     case ~/master/: return "Prod"
     default: throw new Exception ("branch ${git_branch} not recognized.");
   }
+}
   
 //return app name based on environment
 def appName() {
@@ -74,19 +75,19 @@ pipeline {
     ANYPOINT_BG = "mboss"
     ANYPOINT_APP_CLIENT_ID = "anypoint_connectedApp.${ANYPOINT_ENV_TYPE}.client_id"
     ANYPOINT_APP_CLIENT_SECRET = "anypoint_connectedApp.${ANYPOINT_ENV_TYPE}.client_secret"
-    }
+  }
 
   stages {
     stage ('Initialization') {
-    steps {
-      echo "BRANCH_NAME = $BRANCH_NAME"
-      echo "APP_NAME = $APP_NAME"
-      echo "ANYPOINT_ENV_TYPE = $ANYPOINT_ENV_TYPE"
-      echo "ANYPOINT_DEPLOYMENT_ENV = $ANYPOINT_DEPLOYMENT_ENV"
-      echo "MULE_ENV = $MULE_ENV"
-      echo "MULE_ENCRYPTION_KEY = $MULE_ENCRYPTION_KEY"
-      echo "ANYPOINT_APP_CLIENT_ID = $ANYPOINT_APP_CLIENT_ID"
-      echo "ANYPOINT_APP_CLIENT_SECRET = $ANYPOINT_APP_CLIENT_SECRET"
+      steps {
+        echo "BRANCH_NAME = parseBranchName()"
+        echo "APP_NAME = $APP_NAME"
+        echo "ANYPOINT_ENV_TYPE = $ANYPOINT_ENV_TYPE"
+        echo "ANYPOINT_DEPLOYMENT_ENV = $ANYPOINT_DEPLOYMENT_ENV"
+        echo "MULE_ENV = $MULE_ENV"
+        echo "MULE_ENCRYPTION_KEY = $MULE_ENCRYPTION_KEY"
+        echo "ANYPOINT_APP_CLIENT_ID = $ANYPOINT_APP_CLIENT_ID"
+        echo "ANYPOINT_APP_CLIENT_SECRET = $ANYPOINT_APP_CLIENT_SECRET"
       }
     }
     
@@ -149,6 +150,7 @@ pipeline {
       }
     }
   }
+  
   post {
     always {
 	    junit '**/target/surefire-reports/*.xml'
