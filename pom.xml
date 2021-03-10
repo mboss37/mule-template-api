@@ -66,6 +66,7 @@
 						<region>${region}</region>
 						<workers>${workers}</workers>
 						<workerType>${workerType}</workerType>
+						<objectStoreV2>true</objectStoreV2>
 						<properties>
 							<mule.env>${mule.env}</mule.env>
 							<mule.key>${mule.key}</mule.key>
