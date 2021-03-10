@@ -79,8 +79,8 @@ pipeline {
   stages {
     stage ('Initialization') {
     steps {
-      echo "BRANCH_NAME" = "$BRANCH_NAME"
-      echo "APP_NAME" = "$APP_NAME"
+      echo "BRANCH_NAME = $BRANCH_NAME"
+      echo "APP_NAME = $APP_NAME"
       echo "ANYPOINT_ENV_TYPE = $ANYPOINT_ENV_TYPE"
       echo "ANYPOINT_DEPLOYMENT_ENV = $ANYPOINT_DEPLOYMENT_ENV"
       echo "MULE_ENV = $MULE_ENV"
