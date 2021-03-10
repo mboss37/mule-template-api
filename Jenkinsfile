@@ -49,12 +49,6 @@ def getEnvType(git_branch) {
     default: throw new Exception ("branch ${git_branch} not recognized.");
   }
 }
-  
-//return app name based on environment
-def appName() {
-  def name = sh 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout';
-  return name
-} 
 
 pipeline {
   agent any
@@ -64,7 +58,6 @@ pipeline {
   }
   environment {
     BRANCH_NAME = parseBranchName(GIT_BRANCH)
-    APP_NAME = appName()
     MULE_ENV = getMappedEnv(GIT_BRANCH)
     MULE_ENCRYPTION_KEY = "${ANYPOINT_ENV_TYPE}.mule.encryption.key"
     ANYPOINT_ENV_TYPE = getEnvType(GIT_BRANCH)
