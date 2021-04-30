@@ -28,5 +28,17 @@ http://www.mulesoft.org/schema/mule/error-handler-plugin http://www.mulesoft.org
 		doc:id="93b6d564-b2ef-4636-ac3a-dbe3abe5b503" 
 		flowRef="hello-world-api-main" 
 	/>	 -->
+	
+	<json-logger:config name="JSON_Logger_Config"
+		doc:name="JSON Logger Config"
+		doc:id="2e323959-684a-4576-a38d-79e3cb873dc0" 
+		prettyPrint="${logger.prettyPrint}" 
+		applicationName="${app.name}" applicationVersion="${app.version}"
+		environment="${mule.env}" />
+	
+	<configuration-properties
+		doc:name="Error Config Prop"
+		doc:id="a2a29b68-c728-4c0b-9a54-3ae8bbd8490a"
+		file="config/error-properties.yaml" />
 
 </mule>
