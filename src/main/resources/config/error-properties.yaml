@@ -1,9 +1,4 @@
 errors:
-  alias:
-    namespace:
-    http: 
-      - "workday-s-api"
-      - "salesforce-s-api"
   override:
     technical: "false"
     business: "false"

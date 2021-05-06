@@ -40,5 +40,6 @@ http://www.mulesoft.org/schema/mule/error-handler-plugin http://www.mulesoft.org
 		doc:name="Error Config Prop"
 		doc:id="a2a29b68-c728-4c0b-9a54-3ae8bbd8490a"
 		file="config/error-properties.yaml" />
+	<api-gateway:autodiscovery apiId="${api.id}" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="8b02ab97-31d6-4ad4-9c61-5bdd5a7c131f" flowRef="mule-template-api-main" />
 
 </mule>

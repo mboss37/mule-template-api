@@ -33,8 +33,5 @@ output application/json
 }]]></ee:set-payload>
             </ee:message>
         </ee:transform>
-		<validation:is-email doc:name="Is email" doc:id="cfd3c364-6053-496c-a6cb-cd338914093a" email="#[payload.message]">
-			<error-mapping sourceType="VALIDATION:INVALID_EMAIL" targetType="BUSINESS:INVALID_INPUT_DATA" />
-		</validation:is-email>
     </flow>
 </mule>
