@@ -19,7 +19,6 @@ http://www.mulesoft.org/schema/mule/error-handler-plugin http://www.mulesoft.org
 	<configuration-properties
 		file="props/global-properties.yaml" 
 		doc:name="Common Config Props" />
-	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="6bba993a-887a-4fd1-ae51-933fefe55b93" file="props/${mule.env}-properties.yaml" key="${mule.key}" />
 	
 	<!-- <api-gateway:autodiscovery 
 		apiId="${api.id}" 
@@ -28,18 +27,6 @@ http://www.mulesoft.org/schema/mule/error-handler-plugin http://www.mulesoft.org
 		doc:id="93b6d564-b2ef-4636-ac3a-dbe3abe5b503" 
 		flowRef="hello-world-api-main" 
 	/>	 -->
-	
-	<json-logger:config name="JSON_Logger_Config"
-		doc:name="JSON Logger Config"
-		doc:id="2e323959-684a-4576-a38d-79e3cb873dc0" 
-		prettyPrint="${logger.prettyPrint}" 
-		applicationName="${app.name}" applicationVersion="${app.version}"
-		environment="${mule.env}" />
-	
-	<configuration-properties
-		doc:name="Error Config Prop"
-		doc:id="a2a29b68-c728-4c0b-9a54-3ae8bbd8490a"
-		file="config/error-properties.yaml" />
 	<api-gateway:autodiscovery apiId="${api.id}" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="8b02ab97-31d6-4ad4-9c61-5bdd5a7c131f" flowRef="mule-template-api-main" />
 
 </mule>
